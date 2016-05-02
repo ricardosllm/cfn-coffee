@@ -1,0 +1,11 @@
+{
+  "name": "cfn-coffee",
+  "version": "0.1.0",
+  "description": "AWS Cloudformation DSL in CoffeeScript",
+  "main": "main.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ricardo Mota",
+  "license": "MIT"
+}
