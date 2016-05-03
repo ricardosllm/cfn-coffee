@@ -66,7 +66,7 @@ module.exports = class CFN		# CloudFormation
 			AllowedValues: allowed
 			x
 
-	SG: (name, x, deps) ->
+	SecurityGroup: (name, x, deps) ->
 		appendSgIfMissing = (name) ->
 			endsWith = (str, suffix) -> str.indexOf(suffix, str.length - suffix.length) != -1
 			return name if endsWith name, 'Sg'
@@ -187,7 +187,7 @@ module.exports = class CFN		# CloudFormation
 					x
 		]
 
-	Instance: (name, hostname, x, deps) ->
+	EC2: (name, hostname, x, deps) ->
 		@merge [
 			@withKey name,
 				Type: "AWS::EC2::Instance"
@@ -228,7 +228,7 @@ module.exports = class CFN		# CloudFormation
 			GroupSet: groupSet
 		}]
 
-	InstanceWithoutEIP: (name, hostname, x, groupSet, deps) ->
+	EC2WithoutEIP: (name, hostname, x, groupSet, deps) ->
 		@merge [
 			@withKey name,
 				Type: "AWS::EC2::Instance"
@@ -245,25 +245,6 @@ module.exports = class CFN		# CloudFormation
 					x
 
 			@DNS hostname, 'CNAME', name, 'PublicDnsName'
-		]
-
-	PrivateInstance: (name, hostname, x, groupSet, deps) ->
-		@merge [
-			@withKey name,
-				Type: "AWS::EC2::Instance"
-				DependsOn: deps
-				Properties: @extend
-					Tags: [ { Key: "Name", Value: @env+'-'+name } ]
-					InstanceType: "t1.micro"
-					# SubnetId: Ref: "SubnetA"
-					ImageId: "Fn::FindInMap": [ "RegionMap", { Ref: "AWS::Region" }, "AMI" ]
-					KeyName: Ref: "KeyName"
-					# SecurityGroupIds: undefined
-					UserData: "Fn::Base64": Ref: "CloudInitScript"
-					NetworkInterfaces: @NetworkInterfaces {Ref: "SubnetA"}, groupSet
-					x
-
-			@DNS hostname, 'A', name, 'PrivateIp'
 		]
 
 	RecordSetName: (hostname, type) ->
