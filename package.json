@@ -2,13 +2,21 @@
   "name": "cfn-coffee",
   "version": "0.1.0",
   "description": "AWS Cloudformation DSL in CoffeeScript",
-  "main": "main.coffee",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-watch": "node_modules/.bin/mocha test/helper.coffee --watch $(find ./test -name '*.test.coffee')",
+    "test": "node_modules/.bin/mocha $(find ./test -name '*.test.coffee')"
   },
   "author": {
     "name": "Ricardo Mota",
     "email": "ricardosllm@gmail.com"
   },
-  "license": "MIT"
+  "dependencies": {
+    "assert-plus": "^1.0.0",
+    "when": "^3.7.7"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "license": "MIT",
 }
