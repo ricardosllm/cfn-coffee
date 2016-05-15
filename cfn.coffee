@@ -1,7 +1,7 @@
 module.exports = class CFN    # CloudFormation
   any: "0.0.0.0/0"
   constructor: (@env = '<env>', @domain = '<domain>', @tld = '<tld>', @gen = '<gen1>') ->
-    @zone = @env + @domain + @tld
+    @zone        = @domain + '.' + @tld
     @zoneWithDot = @zone + '.'
 
   extend: (o1, o2) =>
@@ -21,7 +21,7 @@ module.exports = class CFN    # CloudFormation
 
   withKey: (k, x) -> o = {}; o[k] = x; o
 
-  prettyPrintJson: (o) -> console.log JSON.stringify o, undefined, 2
+  prettyPrintJson: (o) -> JSON.stringify o, undefined, 2
 
   print: -> @prettyPrintJson @CFN()
 
