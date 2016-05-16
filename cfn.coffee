@@ -304,7 +304,7 @@ module.exports = class CFN    # CloudFormation
         x
       deps
 
-  Queue: (name, x) ->
+  SQS: (name, x) ->
     @withKey name+'Queue',
       Type: "AWS::SQS::Queue"
       Properties: @extend
