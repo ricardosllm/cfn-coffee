@@ -1,33 +1,15 @@
-AWS = require 'aws-sdk'
-config = require 'config'
-awsCfg = config.get 'aws'
-AWS.config.update awsCfg
-AWS.config.apiVersions = config.awsApiVersions
-cloudformation = new AWS.CloudFormation
-CFN = require '../../cfn'
+TestStack = require '../helper'
 
-S3 = class TestS3 extends CFN
-  constructor: () ->
-    @env         = 'test'
-    @domain      = 'cfncoffee'
-    @tld         = 'com'
-    @zone        = @domain + '.' + @tld
-    @zoneWithDot = @zone + '.'
-
+S3 = class TestS3 extends TestStack
   CFN: () -> super @merge [
     Description: 'test stack'
 
     Resources: @merge [
       @Bucket null, 'bucket'
     ]
-
-    Outputs:
-      Region: Value: Ref: "AWS::Region"
   ]
 
 describe 's3', ->
-  # beforeEach ->
-
   describe '.bucket', ->
     describe 'object', ->
       beforeEach ->
