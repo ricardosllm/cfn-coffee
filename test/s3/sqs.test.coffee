@@ -10,16 +10,15 @@ SQS = class TestSQS extends TestStack
   ]
 
 describe 'SQS', ->
-  describe '.bucket', ->
-    describe 'object', ->
-      beforeEach ->
-        @cfn = new SQS
-        @template = { TemplateBody: @cfn.print() }
+  describe 'queue', ->
+    beforeEach ->
+      @cfn = new SQS
+      @template = { TemplateBody: @cfn.print() }
 
-      it 'returns result', ->
-        cloudformation.validateTemplate @template, (err, data) ->
-          if err then @response = err else @response = data
+    it 'validates template', ->
+      cloudformation.validateTemplate @template, (err, data) ->
+        if err then @response = err else @response = data
 
-          expect @response
-            .to.have.property 'ResponseMetadata'
+        expect @response
+          .to.have.property 'ResponseMetadata'
 
