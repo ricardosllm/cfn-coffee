@@ -1,6 +1,6 @@
 module.exports = class CFN    # CloudFormation
   any: "0.0.0.0/0"
-  constructor: (@env = '<env>', @domain = '<domain>', @tld = '<tld>', @gen = '<gen1>') ->
+  constructor: (@env = '<env>', @domain = '<domain>', @tld = '<tld>') ->
     @zone        = @domain + '.' + @tld
     @zoneWithDot = @zone + '.'
 
@@ -13,7 +13,8 @@ module.exports = class CFN    # CloudFormation
         if v instanceof Array and v != m[k]
           m[k].push.apply m[k], v
       else
-        m[k] = if   m[k] instanceof Object and v instanceof Object  then   @extend m[k], v   else   v
+        both_objects = m[k] instanceof Object and v instanceof Object
+        m[k] = if both_objects then @extend m[k], v else v
         m[k] = v if k == 'ImageId'
     m
 
@@ -106,7 +107,10 @@ module.exports = class CFN    # CloudFormation
     SecurityGroupIngress: a
 
   Group: (proto, port, sgRef) ->
-    IpProtocol: proto, FromPort: port, ToPort: port, SourceSecurityGroupId: Ref: sgRef
+    IpProtocol: proto,
+    FromPort: port,
+    ToPort: port,
+    SourceSecurityGroupId: Ref: sgRef
 
   Network: (proto, port, network) ->
     IpProtocol: proto, FromPort: port, ToPort: port, CidrIp: network
