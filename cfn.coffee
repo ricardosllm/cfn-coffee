@@ -69,7 +69,8 @@ module.exports = class CFN    # CloudFormation
 
   SecurityGroup: (name, x, deps) ->
     appendSgIfMissing = (name) ->
-      endsWith = (str, suffix) -> str.indexOf(suffix, str.length - suffix.length) != -1
+      endsWith = (str, suffix) ->
+        str.indexOf(suffix, str.length - suffix.length) != -1
       return name if endsWith name, 'Sg'
       return name + 'Sg'
     name = appendSgIfMissing name
@@ -200,7 +201,7 @@ module.exports = class CFN    # CloudFormation
           Tags: [ { Key: "Name", Value: @env+'-'+name } ]
           InstanceType: "t1.micro"
           SubnetId: Ref: "SubnetA"
-          ImageId: "Fn::FindInMap": [ "RegionMap", { Ref: "AWS::Region" }, "AMI" ]
+          ImageId: "Fn::FindInMap": ["RegionMap", { Ref: "AWS::Region" }, "AMI"]
           KeyName: Ref: "KeyName"
           SecurityGroupIds: undefined
           UserData: "Fn::Base64": Ref: "CloudInitScript"
@@ -241,7 +242,7 @@ module.exports = class CFN    # CloudFormation
           Tags: [ { Key: "Name", Value: @env+'-'+name } ]
           InstanceType: "t1.micro"
           # SubnetId: Ref: "SubnetA"
-          ImageId: "Fn::FindInMap": [ "RegionMap", { Ref: "AWS::Region" }, "AMI" ]
+          ImageId: "Fn::FindInMap": ["RegionMap", { Ref: "AWS::Region" }, "AMI"]
           KeyName: Ref: "KeyName"
           # SecurityGroupIds: undefined
           UserData: "Fn::Base64": Ref: "CloudInitScript"
